@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}Оптимизация фонда | Library CRM{% endblock %}
+
+{% block content %}
+<div class="mb-8 p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+    <h1 class="text-3xl font-bold text-slate-800 mb-4">Оптимизация книжного фонда</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div class="space-y-1">
+            <p class="text-slate-500">Всего книг в фонде: <span class="font-bold text-slate-800">{{ total_books }}</span></p>
+            <p class="text-slate-500">Общая вместимость сети: <span class="font-bold text-slate-800">{{ total_capacity }}</span></p>
+        </div>
+        <div class="md:text-right">
+            <p class="text-slate-500">Средняя загрузка сети:</p>
+            <p class="text-2xl font-black text-indigo-600">
+                {{ avg_rate_percent }}%
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="mb-6">
+    <form method="get" class="flex gap-2">
+        <input type="text" name="q" value="{{ query }}" placeholder="Поиск библиотеки..." 
+               class="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+        <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            Найти
+        </button>
+        {% if query %}
+            <a href="{% url 'analytics:optimization' %}" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors text-center">
+                Сброс
+            </a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="grid gap-6">
+    {% for res in results %}
+    <div class="bg-white rounded-xl shadow-sm border 
+        {% if res.action == 'give' %}border-amber-200{% elif res.action == 'take' %}border-emerald-200{% else %}border-slate-100{% endif %} 
+        overflow-hidden">
+        
+        <details class="group">
+            <summary class="list-none cursor-pointer">
+                <div class="px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/50 group-open:bg-white transition-colors">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xl font-bold text-slate-800">{{ res.library.name }}</h2>
+                            <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <div class="text-sm text-slate-500 mt-1">
+                            Вместимость: <strong>{{ res.library.capacity }}</strong> | 
+                            Количество книг: <strong>{{ res.current_books }} ({{ res.load }}%)</strong> | 
+                            Целевое значение: <strong>{{ res.target }} ({{ res.target_percent }}%)</strong> |
+                            На руках: <strong>{{ res.on_hand_total }} ({{ res.on_hand_percent }}%)</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="text-right">
+                        {% if res.action == 'give' %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-amber-100 text-amber-800">
+                                Нужно забрать: {{ res.diff }} шт.
+                            </span>
+                        {% elif res.action == 'take' %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800">
+                                Нужно добавить: {{ res.diff }} шт.
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-600">
+                                Оптимально
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </summary>
+
+            <div class="px-6 py-6 border-t border-slate-100 bg-white">
+                {% if res.action == 'give' %}
+                    {% if res.candidates|length < res.diff %}
+                    <div class="mb-4 text-xs text-amber-700 bg-amber-50 p-3 rounded border border-amber-100 italic">
+                        <strong>Внимание:</strong> На полке {{ res.candidates|length }} шт., остальные {{ res.on_hand_total }} шт. у читателей.
+                    </div>
+                    {% endif %}
+
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">План вывоза книг:</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
+                                <tr>
+                                    <th class="px-4 py-2">Книга / Автор</th>
+                                    <th class="px-4 py-2 text-center">Инв. номер</th>
+                                    <th class="px-4 py-2 text-right">Куда отправить</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                {% for book_item in res.candidates %}
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="px-4 py-3">
+                                        <div class="font-bold text-slate-800">{{ book_item.title }}</div>
+                                        <div class="text-xs text-slate-500">{{ book_item.author }}</div>
+                                    </td>
+                                    <td class="px-4 py-3 text-center font-mono text-xs text-slate-400">{{ book_item.inventory_number }}</td>
+                                    <td class="px-4 py-3 text-right">
+                                        <span class="inline-block px-2 py-1 bg-indigo-50 text-indigo-700 rounded text-xs font-bold">
+                                            {{ book_item.to_library_name|default:"Ожидает распределения" }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="3" class="py-4 text-center text-slate-400 italic">Нет доступных книг для вывоза (все на руках)</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                {% elif res.action == 'take' %}
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Ожидаемые поставки:</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
+                                <tr>
+                                    <th class="px-4 py-2">Книга / Автор</th>
+                                    <th class="px-4 py-2 text-center">Инв. номер</th>
+                                    <th class="px-4 py-2 text-right">Отправитель</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                {% for item in res.incoming_books %}
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="px-4 py-3">
+                                        <div class="font-bold text-slate-800">{{ item.book.title }}</div>
+                                        <div class="text-xs text-slate-500">{{ item.book.author }}</div>
+                                    </td>
+                                    <td class="px-4 py-3 text-center font-mono text-xs text-slate-400">{{ item.book.inventory_number }}</td>
+                                    <td class="px-4 py-3 text-right">
+                                        <span class="inline-block px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs font-bold">
+                                            {{ item.from_lib.name }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="3" class="py-4 text-center text-slate-400 italic">Поставок не запланировано</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </details>
+    </div>
+    {% empty %}
+    <div class="text-center py-12 bg-white rounded-xl border border-dashed border-slate-300">
+        <p class="text-slate-400">Ничего не найдено</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

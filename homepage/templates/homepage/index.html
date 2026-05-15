@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Дашборд | Library CRM{% endblock %}
+
+{% block content %}
+<div class="mb-8 text-center md:text-left">
+    <h1 class="text-3xl font-bold text-slate-800">Сводка по сети</h1>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <a href="{% url 'homepage:total_books' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-blue-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Всего книг в фонде</h3>
+        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ global_stats.total }}</div>
+    </a>
+
+    <a href="{% url 'homepage:shelves_books' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-emerald-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Доступно (на полках)</h3>
+        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ global_stats.on_shelf }}</div>
+    </a>
+
+    <a href="{% url 'homepage:handed_books' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-amber-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Выдано читателям</h3>
+        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ global_stats.on_hand }}</div>
+    </a>
+
+    <a href="{% url 'homepage:total_readers' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-indigo-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Читатели</h3>
+        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ total_readers }}</div>
+    </a>
+</div>
+
+<div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+    <h2 class="text-2xl font-bold text-slate-800">Филиалы</h2>
+    
+    <form method="get" class="w-full md:w-1/3">
+        <div class="relative">
+            <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" name="q" value="{{ search_query }}" placeholder="Поиск по названию..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+        </div>
+    </form>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for library in libraries %}
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col hover:shadow-md transition">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <a href="{% url 'homepage:library_detail' library.id %}" class="hover:text-indigo-600 transition-colors">
+                    <h3 class="text-xl font-bold text-slate-800">{{ library.name }}</h3>
+                </a>
+                <p class="text-sm text-slate-500 mt-1">Вместимость: {{ library.capacity }}</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            </div>
+        </div>
+
+        <div class="space-y-3 mb-6 flex-grow">
+            <div class="flex justify-between text-sm">
+                <span class="text-slate-500">Всего книг</span>
+                <span class="font-bold text-slate-800 bg-slate-100 px-2 rounded">{{ library.total_books }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-slate-500">На полках</span>
+                <span class="font-bold text-emerald-600 bg-emerald-50 px-2 rounded">{{ library.on_shelf }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-slate-500">На руках</span>
+                <span class="font-bold text-amber-600 bg-amber-50 px-2 rounded">{{ library.on_hand }}</span>
+            </div>
+        </div>
+
+        <a href="{% url 'homepage:library_detail' library.id %}" class="text-center text-sm font-medium text-indigo-600 hover:text-indigo-700 py-2 border-t border-slate-100 mt-auto pt-4 transition-colors">
+            Детальный просмотр &rarr;
+        </a>
+    </div>
+    {% empty %}
+    <div class="col-span-full text-center py-12 text-slate-500">
+        Библиотеки не найдены.
+    </div>
+    {% endfor %}
+</div>
+
+{% if page_obj.has_other_pages %}
+<div class="mt-8 flex justify-center gap-2">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ search_query }}" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">Назад</a>
+    {% endif %}
+
+    <span class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg font-bold border border-indigo-100">
+        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&q={{ search_query }}" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">Вперед</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

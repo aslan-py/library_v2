@@ -1,0 +1,17 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.ipynb_checkpoints
+.mypy_cache
+Untitled.ipynb
+/collected_static
+gg.py
+# Virtual environments
+.venv
+
+# Db
+*.sqlite3

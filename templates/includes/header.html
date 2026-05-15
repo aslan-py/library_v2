@@ -1,0 +1,22 @@
+<header class="bg-blue-800 text-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold tracking-wider">
+            <a href="{% url 'homepage:dashboard' %}" class="hover:opacity-80 transition-opacity">
+              📚 Library<span class="text-blue-300">CRM</span>
+            </a>
+        </div>
+        <nav>
+            <ul class="flex space-x-6 text-sm font-medium items-center">
+                <li><a href="{% url 'homepage:dashboard' %}" class="hover:text-blue-300 transition">Дашборд</a></li>
+                <li><a href="{% url 'core:book_add' %}" class="hover:text-blue-300 transition">Книги</a></li>
+                <li><a href="{% url 'core:reader_add' %}" class="hover:text-blue-300 transition">Читатели</a></li>
+                <li>
+                    <a href="{% url 'analytics:optimization' %}" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg transition shadow-lg">
+                        Анализ фонда
+                    </a>
+                </li>
+                <li><a href="/admin/" class="hover:text-blue-300 transition">Управление</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
