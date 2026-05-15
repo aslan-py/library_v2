@@ -79,15 +79,15 @@ Library CRM — это система управления сетью библи
 
 **🛠 Технологии**
 
-Python 3.12.7
+- Python 3.12.7
 
-Django 6 — основной Web-фреймворк
+- Django 6 — основной Web-фреймворк
 
-SQLite — базы данных
+- SQLite — базы данных
 
-HTML / CSS / Tailwind CSS — рендеринг интерфейса (Templates)
+- HTML / CSS / Tailwind CSS — рендеринг интерфейса (Templates)
 
-uv — современный менеджер пакетов (Rust)
+- uv — современный менеджер пакетов (Rust)
 
 # 🚀 Быстрый старт
 
@@ -120,10 +120,6 @@ uv run python manage.py runserver
 # Остальные команды Django 
 uv run <команда Django>
 ```
-uv venv  
-source .venv/bin/activate  # Для Linux/macOS (или .venv\Scripts\activate для Windows)
-uv pip install -r requirements.txt
-
 
 ### Вариант Б: Использование стандартного pip
 
