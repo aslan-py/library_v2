@@ -34,49 +34,6 @@ class Library(models.Model):
         super().save(*args, **kwargs)
 
 
-class Reader(models.Model):
-    """Хранит данные читателя сети библиотек."""
-
-    name = models.CharField(
-        verbose_name=ConstansModels.READER_NAME,
-        max_length=ConstansModels.MAX_STRING_LENGTH,
-        validators=(
-            RegexValidator(
-                regex=ConstansModels.NAME_REGEX,
-                message=ConstansModels.ERR_ONLY_LETTERS,
-            ),
-        ),
-    )
-    phone = models.CharField(
-        verbose_name=ConstansModels.READER_PHONE,
-        validators=(
-            RegexValidator(
-                regex=ConstansModels.PHONE_REGEX,
-                message=ConstansModels.ERR_PHONE_FORMAT,
-            ),
-        ),
-        max_length=ConstansModels.MAX_PHONE_LENGTH,
-        unique=True,
-    )
-
-    class Meta:
-        verbose_name = ConstansModels.READER_VERBOSE_NAME
-        verbose_name_plural = ConstansModels.READER_VERBOSE_NAME_PLURAL
-
-    def __str__(self):
-        """Возвращает строковое представление читателя (его имя)."""
-        return self.name
-
-    def save(self, *args, **kwargs):
-        """Сохраняет данные читателя.
-
-        Оставляет только первое слово из имени и капитализирует его.
-        """
-        if self.name and self.name.strip():
-            self.name = self.name.split()[0].capitalize()
-        super().save(*args, **kwargs)
-
-
 class Book(models.Model):
     """Хранит физический экземпляр книги и её местоположение."""
 
@@ -112,14 +69,6 @@ class Book(models.Model):
         related_name='books',
         verbose_name=Library._meta.verbose_name,
     )
-    reader = models.ForeignKey(
-        Reader,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='borrowed_books',
-        verbose_name=ConstansModels.BOOK_READER,
-    )
 
     class Meta:
         verbose_name = ConstansModels.BOOK_VERBOSE_NAME
@@ -130,9 +79,7 @@ class Book(models.Model):
         return f'{self.title} ({self.inventory_number})'
 
     def get_absolute_url(self):
-        return reverse(
-            'homepage:library_detail', kwargs={'pk': self.library.pk}
-        )
+        return reverse('homepage:library_detail', kwargs={'pk': self.library.pk})
 
     def clean(self):
         """Выполняет валидацию вместимости библиотеки перед сохранением."""
@@ -141,7 +88,7 @@ class Book(models.Model):
 
     def save(self, *args, **kwargs):
         """Сохраняет экземпляр книги.
-    
+
         Запускает валидацию (full_clean) и капитализирует заголовок и автора.
         """
         self.full_clean()

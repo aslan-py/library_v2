@@ -10,22 +10,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
     <a href="{% url 'homepage:total_books' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-blue-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Всего книг в фонде</h3>
-        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ global_stats.total }}</div>
-    </a>
-
-    <a href="{% url 'homepage:shelves_books' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-emerald-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Доступно (на полках)</h3>
-        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ global_stats.on_shelf }}</div>
-    </a>
-
-    <a href="{% url 'homepage:handed_books' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-amber-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Выдано читателям</h3>
-        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ global_stats.on_hand }}</div>
-    </a>
-
-    <a href="{% url 'homepage:total_readers' %}" class="block bg-white rounded-xl shadow-sm border-l-4 border-l-indigo-500 p-6 hover:shadow-md hover:bg-slate-50 transition">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center md:text-left">Читатели</h3>
-        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ total_readers }}</div>
+        <div class="text-4xl font-black text-slate-800 text-center md:text-left">{{ global_stats }}</div>
     </a>
 </div>
 
@@ -42,40 +27,37 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for library in libraries %}
-    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col hover:shadow-md transition">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
         <div class="flex justify-between items-start mb-6">
-            <div>
-                <a href="{% url 'homepage:library_detail' library.id %}" class="hover:text-indigo-600 transition-colors">
-                    <h3 class="text-xl font-bold text-slate-800">{{ library.name }}</h3>
-                </a>
-                <p class="text-sm text-slate-500 mt-1">Вместимость: {{ library.capacity }}</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+            <a href="{% url 'homepage:library_detail' library.id %}" class="hover:text-indigo-600 transition-colors">
+                <h3 class="text-xl font-bold text-slate-800">{{ library.name }}</h3>
+            </a>
+            <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
             </div>
         </div>
 
-        <div class="space-y-3 mb-6 flex-grow">
-            <div class="flex justify-between text-sm">
-                <span class="text-slate-500">Всего книг</span>
-                <span class="font-bold text-slate-800 bg-slate-100 px-2 rounded">{{ library.total_books }}</span>
+        <div class="grid grid-cols-2 gap-3 mb-6 flex-grow">
+            <div class="bg-slate-50 rounded-lg p-3 flex flex-col justify-center items-center border border-slate-100">
+                <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Вместимость</span>
+                <span class="text-2xl font-black text-slate-700">{{ library.capacity }}</span>
             </div>
-            <div class="flex justify-between text-sm">
-                <span class="text-slate-500">На полках</span>
-                <span class="font-bold text-emerald-600 bg-emerald-50 px-2 rounded">{{ library.on_shelf }}</span>
-            </div>
-            <div class="flex justify-between text-sm">
-                <span class="text-slate-500">На руках</span>
-                <span class="font-bold text-amber-600 bg-amber-50 px-2 rounded">{{ library.on_hand }}</span>
+            
+            <div class="bg-indigo-50/50 rounded-lg p-3 flex flex-col justify-center items-center border border-indigo-50">
+                <span class="text-[10px] uppercase tracking-wider font-bold text-indigo-400 mb-1">Всего книг</span>
+                <span class="text-2xl font-black text-indigo-700">{{ library.total_books }}</span>
             </div>
         </div>
 
-        <a href="{% url 'homepage:library_detail' library.id %}" class="text-center text-sm font-medium text-indigo-600 hover:text-indigo-700 py-2 border-t border-slate-100 mt-auto pt-4 transition-colors">
-            Детальный просмотр &rarr;
+        <a href="{% url 'homepage:library_detail' library.id %}" class="text-center text-sm font-bold text-slate-400 hover:text-indigo-600 py-3 border-t border-slate-100 mt-auto transition-colors flex justify-center items-center gap-2 group">
+            Детальный просмотр 
+            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
         </a>
     </div>
     {% empty %}
-    <div class="col-span-full text-center py-12 text-slate-500">
+    <div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-xl border border-slate-100 shadow-sm">
         Библиотеки не найдены.
     </div>
     {% endfor %}

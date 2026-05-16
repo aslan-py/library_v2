@@ -1,38 +1,37 @@
 [
   {
-    "model": "core.library", "pk": 1,
-    "fields": { "name": "Библиотека №1", "capacity": 12 }
+    "model": "core.library",
+    "pk": 1,
+    "fields": { "name": "Центральная библиотека", "capacity": 10 }
   },
   {
-    "model": "core.library", "pk": 2,
-    "fields": { "name": "Библиотека №2", "capacity": 10 }
+    "model": "core.library",
+    "pk": 2,
+    "fields": { "name": "Филиал северный", "capacity": 6 }
   },
   {
-    "model": "core.library", "pk": 3,
-    "fields": { "name": "Библиотека №3", "capacity": 15 }
+    "model": "core.library",
+    "pk": 3,
+    "fields": { "name": "Детский сектор", "capacity": 5 }
   },
-  
-  {"model": "core.book", "pk": 1, "fields": {"title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-101", "library": 1}},
-  {"model": "core.book", "pk": 2, "fields": {"title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-102", "library": 1}},
-  {"model": "core.book", "pk": 3, "fields": {"title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-103", "library": 1}},
-  
-  {"model": "core.book", "pk": 4, "fields": {"title": "1984", "author": "Оруэлл", "inventory_number": "INV-104", "library": 1}},
-  {"model": "core.book", "pk": 5, "fields": {"title": "1984", "author": "Оруэлл", "inventory_number": "INV-105", "library": 1}},
-  {"model": "core.book", "pk": 6, "fields": {"title": "1984", "author": "Оруэлл", "inventory_number": "INV-106", "library": 1}},
-  {"model": "core.book", "pk": 7, "fields": {"title": "1984", "author": "Оруэлл", "inventory_number": "INV-107", "library": 1}},
-  
-  {"model": "core.book", "pk": 8, "fields": {"title": "Идиот", "author": "Достоевский", "inventory_number": "INV-108", "library": 1}},
-  {"model": "core.book", "pk": 9, "fields": {"title": "Мертвые души", "author": "Гоголь", "inventory_number": "INV-109", "library": 1}},
-  {"model": "core.book", "pk": 10, "fields": {"title": "Горе от ума", "author": "Грибоедов", "inventory_number": "INV-110", "library": 1}},
 
-  {"model": "core.book", "pk": 11, "fields": {"title": "Дюна", "author": "Герберт", "inventory_number": "INV-201", "library": 2}},
-  {"model": "core.book", "pk": 12, "fields": {"title": "Дюна", "author": "Герберт", "inventory_number": "INV-202", "library": 2}},
-  {"model": "core.book", "pk": 13, "fields": {"title": "Дюна", "author": "Герберт", "inventory_number": "INV-203", "library": 2}},
-  
-  {"model": "core.book", "pk": 14, "fields": {"title": "Солярис", "author": "Лем", "inventory_number": "INV-204", "library": 2}},
-  {"model": "core.book", "pk": 15, "fields": {"title": "Основание", "author": "Азимов", "inventory_number": "INV-205", "library": 2}},
-  {"model": "core.book", "pk": 16, "fields": {"title": "Пикник на обочине", "author": "Стругацкие", "inventory_number": "INV-206", "library": 2}},
+  { "model": "core.book", "pk": 1, "fields": { "title": "Дюна", "author": "Герберт", "inventory_number": "INV-001", "library": 1 } },
+  { "model": "core.book", "pk": 2, "fields": { "title": "Дюна", "author": "Герберт", "inventory_number": "INV-002", "library": 1 } },
+  { "model": "core.book", "pk": 3, "fields": { "title": "Дюна", "author": "Герберт", "inventory_number": "INV-003", "library": 2 } },
 
-  {"model": "core.book", "pk": 17, "fields": {"title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-301", "library": 3}},
-  {"model": "core.book", "pk": 18, "fields": {"title": "Дюна", "author": "Герберт", "inventory_number": "INV-302", "library": 3}}
+  { "model": "core.book", "pk": 4, "fields": { "title": "Мертвые души", "author": "Гоголь", "inventory_number": "INV-004", "library": 2 } },
+  { "model": "core.book", "pk": 5, "fields": { "title": "Мертвые души", "author": "Гоголь", "inventory_number": "INV-005", "library": 2 } },
+  { "model": "core.book", "pk": 6, "fields": { "title": "Мертвые души", "author": "Гоголь", "inventory_number": "INV-006", "library": 3 } },
+
+  { "model": "core.book", "pk": 7, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-007", "library": 1 } },
+  { "model": "core.book", "pk": 8, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-008", "library": 1 } },
+  { "model": "core.book", "pk": 9, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-009", "library": 1 } },
+  { "model": "core.book", "pk": 10, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-010", "library": 3 } },
+
+  { "model": "core.book", "pk": 11, "fields": { "title": "Хоббит", "author": "Толкин", "inventory_number": "INV-011", "library": 1 } },
+  { "model": "core.book", "pk": 12, "fields": { "title": "Хоббит", "author": "Толкин", "inventory_number": "INV-012", "library": 2 } },
+
+  { "model": "core.book", "pk": 13, "fields": { "title": "Идиот", "author": "Достоевский", "inventory_number": "INV-013", "library": 3 } },
+  { "model": "core.book", "pk": 14, "fields": { "title": "Идиот", "author": "Достоевский", "inventory_number": "INV-014", "library": 3 } },
+  { "model": "core.book", "pk": 15, "fields": { "title": "Идиот", "author": "Достоевский", "inventory_number": "INV-015", "library": 3 } }
 ]

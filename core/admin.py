@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from core.constants import ConstantsAdmin
 
-from .models import Book, Library, Reader
+from .models import Book, Library
 
 
 @admin.register(Library)
@@ -19,29 +19,6 @@ class LibraryAdmin(admin.ModelAdmin):
         return obj.books.count()
 
 
-@admin.register(Reader)
-class ReaderAdmin(admin.ModelAdmin):
-    """Настройки админки для читателей."""
-
-    list_display = ('id', 'name', 'phone', 'get_borrowed_books')
-    list_display_links = ('id', 'name')
-    search_fields = ('name', 'phone')
-
-    def get_queryset(self, request):
-        """Оптимизация: предзагрузка книг читателя."""
-        return super().get_queryset(request).prefetch_related('borrowed_books')
-
-    @admin.display(description=ConstantsAdmin.BORROWED_BOOKS_LABEL)
-    def get_borrowed_books(self, obj):
-        """Формирует строку со списком книг читателя."""
-        books = obj.borrowed_books.all()
-        if not books:
-            return ConstantsAdmin.NO_BOOKS
-        return ', '.join([
-            f'{book.title}(№{book.inventory_number})' for book in books
-        ])
-
-
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     """Настройки админки для книг."""
@@ -52,9 +29,11 @@ class BookAdmin(admin.ModelAdmin):
         'author',
         'inventory_number',
         'library',
-        'reader',
     )
-    list_display_links = ('id', 'title', 'reader')
+    list_display_links = (
+        'id',
+        'title',
+    )
     list_filter = ('library', 'author')
     search_fields = (
         'title',
@@ -66,7 +45,7 @@ class BookAdmin(admin.ModelAdmin):
     ordering = ('-id',)
     empty_value_display = ConstantsAdmin.EMPTY_VALUE
 
-    list_select_related = ('library', 'reader')
+    list_select_related = ('library',)
 
     fieldsets = (
         (
@@ -76,12 +55,11 @@ class BookAdmin(admin.ModelAdmin):
         (
             ConstantsAdmin.FIELDSET_STATUS,
             {
-                'fields': ('library', 'reader'),
-                'classes': ('collapse',),
+                'fields': ('library',),
             },
         ),
     )
 
-    autocomplete_fields = ('library', 'reader')
+    autocomplete_fields = ('library',)
     save_as = True
     save_on_top = True
