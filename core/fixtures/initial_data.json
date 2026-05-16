@@ -2,36 +2,107 @@
   {
     "model": "core.library",
     "pk": 1,
-    "fields": { "name": "Центральная библиотека", "capacity": 10 }
+    "fields": {
+      "name": "Первая",
+      "capacity": 20
+    }
   },
   {
     "model": "core.library",
     "pk": 2,
-    "fields": { "name": "Филиал северный", "capacity": 6 }
+    "fields": {
+      "name": "Вторая",
+      "capacity": 20
+    }
   },
   {
     "model": "core.library",
     "pk": 3,
-    "fields": { "name": "Детский сектор", "capacity": 5 }
+    "fields": {
+      "name": "Третья",
+      "capacity": 20
+    }
   },
 
-  { "model": "core.book", "pk": 1, "fields": { "title": "Дюна", "author": "Герберт", "inventory_number": "INV-001", "library": 1 } },
-  { "model": "core.book", "pk": 2, "fields": { "title": "Дюна", "author": "Герберт", "inventory_number": "INV-002", "library": 1 } },
-  { "model": "core.book", "pk": 3, "fields": { "title": "Дюна", "author": "Герберт", "inventory_number": "INV-003", "library": 2 } },
+  {
+    "model": "core.book",
+    "pk": 1,
+    "fields": {
+      "title": "Первая Уникальная",
+      "author": "Автор",
+      "inventory_number": "INV-001",
+      "library": 1
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 2,
+    "fields": {
+      "title": "Вторая уникальная",
+      "author": "Автор",
+      "inventory_number": "INV-002",
+      "library": 1
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 3,
+    "fields": {
+      "title": "Третья Уникальная",
+      "author": "Автор",
+      "inventory_number": "INV-003",
+      "library": 1
+    }
+  },
 
-  { "model": "core.book", "pk": 4, "fields": { "title": "Мертвые души", "author": "Гоголь", "inventory_number": "INV-004", "library": 2 } },
-  { "model": "core.book", "pk": 5, "fields": { "title": "Мертвые души", "author": "Гоголь", "inventory_number": "INV-005", "library": 2 } },
-  { "model": "core.book", "pk": 6, "fields": { "title": "Мертвые души", "author": "Гоголь", "inventory_number": "INV-006", "library": 3 } },
-
-  { "model": "core.book", "pk": 7, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-007", "library": 1 } },
-  { "model": "core.book", "pk": 8, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-008", "library": 1 } },
-  { "model": "core.book", "pk": 9, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-009", "library": 1 } },
-  { "model": "core.book", "pk": 10, "fields": { "title": "Мастер и Маргарита", "author": "Булгаков", "inventory_number": "INV-010", "library": 3 } },
-
-  { "model": "core.book", "pk": 11, "fields": { "title": "Хоббит", "author": "Толкин", "inventory_number": "INV-011", "library": 1 } },
-  { "model": "core.book", "pk": 12, "fields": { "title": "Хоббит", "author": "Толкин", "inventory_number": "INV-012", "library": 2 } },
-
-  { "model": "core.book", "pk": 13, "fields": { "title": "Идиот", "author": "Достоевский", "inventory_number": "INV-013", "library": 3 } },
-  { "model": "core.book", "pk": 14, "fields": { "title": "Идиот", "author": "Достоевский", "inventory_number": "INV-014", "library": 3 } },
-  { "model": "core.book", "pk": 15, "fields": { "title": "Идиот", "author": "Достоевский", "inventory_number": "INV-015", "library": 3 } }
+  {
+    "model": "core.book",
+    "pk": 4,
+    "fields": {
+      "title": "Дубль",
+      "author": "Автор",
+      "inventory_number": "INV-004",
+      "library": 1
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 5,
+    "fields": {
+      "title": "Дубль",
+      "author": "Автор",
+      "inventory_number": "INV-005",
+      "library": 1
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 6,
+    "fields": {
+      "title": "Дубль",
+      "author": "Автор",
+      "inventory_number": "INV-006",
+      "library": 1
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 7,
+    "fields": {
+      "title": "Дубль",
+      "author": "Автор",
+      "inventory_number": "INV-007",
+      "library": 1
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 8,
+    "fields": {
+      "title": "Дубль",
+      "author": "Автор",
+      "inventory_number": "INV-008",
+      "library": 1
+    }
+  }
 ]

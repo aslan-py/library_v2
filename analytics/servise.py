@@ -41,7 +41,13 @@ class FundOptimizationService:
             FundOptimizationService._execute_transfers(
                 title, author, givers, takers, results_map
             )
-
+        for data in results_map.values():
+            data['total_give_books'] = sum(
+                item['amount'] for item in data['give']
+            )
+            data['total_take_books'] = sum(
+                item['amount'] for item in data['take']
+            )
         # Шаг 4: Фильтрация и сортировка.
         final_results = FundOptimizationService._finalize_results(
             results_map, query_filter

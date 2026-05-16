@@ -38,14 +38,14 @@
             </div>
             
             <div class="flex flex-wrap gap-2">
-                {% if item.take %}
+                {% if item.total_take_books > 0 %}
                     <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-emerald-200">
-                        + ПРИНЯТЬ: {{ item.take|length }} парт.
+                        + ПРИНЯТЬ: {{ item.total_take_books }} кн..
                     </span>
                 {% endif %}
-                {% if item.give %}
+                {% if item.total_give_books > 0 %}
                     <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-amber-200">
-                        - ОТДАТЬ: {{ item.give|length }} парт.
+                        - ОТДАТЬ: {{ item.total_give_books }} кн.
                     </span>
                 {% endif %}
             </div>
