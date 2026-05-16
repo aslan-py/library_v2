@@ -302,40 +302,53 @@ class FundOptimizationService:
 
         for item in donor_pool:
             book = item['book']
-            assigned_to = None
 
-            # Приоритет 1: Отправляем туда, где такой книги нет
+            best_receiver = None
+            # Задаем "худшие" стартовые показатели для поиска лучшего кандидата
+            best_copies = float('inf')  # Бесконечное число дубликатов
+            best_hole = 0  # Нулевой дефицит
+
+            # Перебираем всех реципиентов
             for rec in receivers:
-                if len(rec['incoming_books']) < rec['diff']:
-                    in_base = any(
-                        b.title.lower() == book.title.lower()
-                        and b.author.lower() == book.author.lower()
-                        for b in rec['library'].all_books_list
-                    )
-                    in_path = any(
-                        b['book'].title.lower() == book.title.lower()
-                        and b['book'].author.lower() == book.author.lower()
-                        for b in rec['incoming_books']
-                    )
+                current_hole = rec['diff'] - len(rec['incoming_books'])
 
-                    if not in_base and not in_path:
-                        assigned_to = rec
-                        break
+                # 1. Если библиотеке книги больше не нужны — пропускаем
+                if current_hole <= 0:
+                    continue
 
-            # Приоритет 2: Отправляем туда, где больше всего свободного места
-            if not assigned_to:
-                receivers.sort(
-                    key=lambda x: x['diff'] - len(x['incoming_books']),
-                    reverse=True,
+                # 2. Считаем, сколько таких книг у нее уже есть (в базе + едут)
+                in_base = sum(
+                    1
+                    for b in rec['library'].all_books_list
+                    if b.title.lower() == book.title.lower()
+                    and b.author.lower() == book.author.lower()
                 )
-                for rec in receivers:
-                    if len(rec['incoming_books']) < rec['diff']:
-                        assigned_to = rec
-                        break
+                in_path = sum(
+                    1
+                    for b in rec['incoming_books']
+                    if b['book'].title.lower() == book.title.lower()
+                    and b['book'].author.lower() == book.author.lower()
+                )
+                total_copies = in_base + in_path
 
-            if assigned_to:
-                book.to_library_name = assigned_to['library'].name
-                assigned_to['incoming_books'].append({
+                # 3. Сравниваем с текущим лидером (поиск лучшего)
+                # ПРИОРИТЕТ А: Ищем того, у кого меньше всего копий этой книги
+                if total_copies < best_copies:
+                    best_copies = total_copies
+                    best_hole = current_hole
+                    best_receiver = rec
+
+                # ПРИОРИТЕТ Б: Если копий поровну, отдаем -у кого больше "дыра"
+                elif total_copies == best_copies:
+                    if current_hole > best_hole:
+                        best_copies = total_copies
+                        best_hole = current_hole
+                        best_receiver = rec
+
+            # 4. Если нашли идеального кандидата — оформляем посылку
+            if best_receiver:
+                book.to_library_name = best_receiver['library'].name
+                best_receiver['incoming_books'].append({
                     'book': book,
                     'from_lib': item['from_lib'],
                 })
