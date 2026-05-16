@@ -35,6 +35,12 @@ uv --version
 # Установка зависимостей
 uv sync --no-dev
 
+# Миграции
+uv run python manage.py migrate
+
+# Фикстуры
+uv run python manage.py loaddata initial_data.json
+
 # Запуск проекта
 uv run python manage.py runserver
 
